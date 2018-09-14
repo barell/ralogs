@@ -7,6 +7,15 @@ directly to your terminal from multiple containers within a single stack.
 
 ralogs requires Python and pip to be installed on your machine. It has been tested only with Python 3.5.
 
+## Changelog
+
+1.1 
+- Added third parameter to specify a service
+- Added container names and IDs to the logs output
+
+1.0 
+- Initial release
+
 ## Installation
 
 ```
@@ -31,4 +40,10 @@ $ subl $HOME/.ralogs
 
 ```
 $ ralogs environment stack
+```
+
+If the stack has more than one service, you can select it by name by adding third argument:
+
+```
+$ ralogs environment stack service
 ```

@@ -76,20 +76,20 @@ def get_service_by_id(service_id, project_id):
     return fetch_data('projects/' + project_id + '/services/' + service_id)
 
 
-async def setup(container_ids, project_id):
+async def setup(container_ids, project_id, stack_name):
     session = aiohttp.ClientSession()
     loop = asyncio.get_event_loop()
 
     for container_id in container_ids:
         data = fetch_data('projects/' + project_id + '/containers/' + container_id + '/?action=logs', 'post')
-        loop.create_task(serve(data['url'] + '?token=' + data['token'], session))
+        loop.create_task(serve(data['url'] + '?token=' + data['token'], session, container_id, stack_name))
         print('Connected to ' + container_id)
 
 
-async def serve(url, session):
+async def serve(url, session, container_id, stack_name):
     async with session.ws_connect(url) as ws:
         async for msg in ws:
-            print(msg.data)
+            print(stack_name + '.' + container_id + ' | ' + msg.data)
 
 
 def main():
@@ -105,19 +105,23 @@ def main():
             json.dump(config, outfile, sort_keys=True, indent=4)
 
     if len(sys.argv) == 2 and sys.argv[1] == '-v':
-        print('ralogs v1.0')
+        print('ralogs v1.1')
         sys.exit()
 
     if len(sys.argv) < 3:
         print('Please specify environment and stack')
-        print('Usage: ralogs ENVIRONMENT STACK')
+        print('Usage: ralogs ENVIRONMENT STACK [SERVICE]')
         sys.exit(1)
 
     project_name = sys.argv[1]
     stack_name = sys.argv[2]
     container_ids = []
+    service_name = ''
 
-    print('Loading stack data for ' + project_name + ' ' + stack_name)
+    if len(sys.argv) >= 4:
+        service_name = sys.argv[3]
+
+    print('Loading stack data for ' + project_name + ' ' + stack_name + ' ' + service_name)
     project = get_project_by_name(project_name)
 
     if project is None:
@@ -131,9 +135,12 @@ def main():
         sys.exit(1)
 
     print('Resolving container IDs...')
+
     for service_id in stack['serviceIds']:
         service = get_service_by_id(service_id, project['id'])
-        container_ids.extend(service['instanceIds'])
+
+        if not service_name or service_name == service['name']:
+            container_ids.extend(service['instanceIds'])
 
     print('OK: ', container_ids)
 
@@ -141,7 +148,7 @@ def main():
     loop = asyncio.get_event_loop()
 
     try:
-        loop.run_until_complete(setup(container_ids, project['id']))
+        loop.run_until_complete(setup(container_ids, project['id'], stack_name))
         loop.run_forever()
     except KeyboardInterrupt:
         pass

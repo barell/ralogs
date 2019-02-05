@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='ralogs',
-    version='1.0',
+    version='1.2',
     url='https://github.com/barell/ralogs',
     packages=['ralogs',],
     license='MIT',

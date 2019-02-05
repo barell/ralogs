@@ -5,9 +5,12 @@ directly to your terminal from multiple containers within a single stack.
 
 ## Requirements
 
-ralogs requires Python and pip to be installed on your machine. It has been tested only with Python 3.5.
+ralogs requires Python 3.5 or higher and pip3 to be installed on your machine.
 
 ## Changelog
+
+1.2
+- moved required dependencies into setup.py to avoid strict version requirements
 
 1.1 
 - Added third parameter to specify a service
@@ -19,7 +22,7 @@ ralogs requires Python and pip to be installed on your machine. It has been test
 ## Installation
 
 ```
-$ pip install ralogs
+$ pip3 install ralogs
 ```
 
 ## Configuration

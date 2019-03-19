@@ -63,7 +63,7 @@ def get_project_by_name(name):
 def get_stack_by_name(name, project_id):
     response = None
 
-    data = fetch_data('projects/' + project_id + '/stacks')
+    data = fetch_data('projects/' + project_id + '/stacks?name=' + name)
 
     for stack in data['data']:
         if name == stack['name']:
@@ -105,7 +105,7 @@ def main():
             json.dump(config, outfile, sort_keys=True, indent=4)
 
     if len(sys.argv) == 2 and sys.argv[1] == '-v':
-        print('ralogs v1.2')
+        print('ralogs v1.3')
         sys.exit()
 
     if len(sys.argv) < 3:

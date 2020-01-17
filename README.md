@@ -9,6 +9,9 @@ ralogs requires Python 3.5 or higher and pip3 to be installed on your machine.
 
 ## Changelog
 
+1.4
+- fixed installation script
+
 1.3
 - fix stack not found issue by searching API using stack name
 

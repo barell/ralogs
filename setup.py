@@ -12,5 +12,5 @@ setup(
             'ralogs=ralogs.ralogs:main'
         ]
     },
-    install_required=['requests', 'aiohttp'],
+    install_requires=['requests', 'aiohttp'],
 )

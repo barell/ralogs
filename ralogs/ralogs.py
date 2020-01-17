@@ -105,7 +105,7 @@ def main():
             json.dump(config, outfile, sort_keys=True, indent=4)
 
     if len(sys.argv) == 2 and sys.argv[1] == '-v':
-        print('ralogs v1.3')
+        print('ralogs v1.4')
         sys.exit()
 
     if len(sys.argv) < 3:
